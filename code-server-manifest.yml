@@ -15,6 +15,9 @@ spec:
       labels:
         app: code-server
     spec:
+      securityContext: # <-- THÊM KHỐI NÀY
+          fsGroup: 1000  # Đặt quyền sở hữu Volume thành GID 1000
+          runAsUser: 1000
       containers:
       - name: code-server
         # Image chính thức của code-server
