@@ -20,30 +20,26 @@ spec:
         fsGroup: 1000
         runAsUser: 1000
       containers:
-      - name: code-server
-        image: tien22012003/code-server-kubectl:latest
-        args: ["--bind-addr", "0.0.0.0:8080"]
-        ports:
-        - containerPort: 8080
-        env:
-        - name: PASSWORD
-          value: "123456"
-        volumeMounts:
-        - name: code-volume
-          mountPath: /home/coder
-        - name: kubernetes-token
-          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-          readOnly: true
+        - name: code-server
+          image: tien22012003/code-server-kubectl:latest
+          args: ["--bind-addr", "0.0.0.0:8080"]
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PASSWORD
+              value: "123456"
+          volumeMounts:
+            - name: code-volume
+              mountPath: /home/coder
+            - name: kubernetes-token
+              mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              readOnly: true
       volumes:
-      - name: code-volume
-        persistentVolumeClaim:
-          claimName: code-server-pvc
-      - name: kubernetes-token
-        projected:
-          sources:
-          - serviceAccountToken:
-              path: token
-              expirationSeconds: 3600
+        - name: code-volume
+          persistentVolumeClaim:
+            claimName: code-server-pvc
+        - name: kubernetes-token
+          emptyDir: {} # Kubernetes sẽ tự mount ServiceAccount secret
 
 ---
 # Service để truy cập Code-Server
@@ -85,9 +81,9 @@ kind: ClusterRoleBinding
 metadata:
   name: code-server-crb
 subjects:
-- kind: ServiceAccount
-  name: code-server-sa
-  namespace: default
+  - kind: ServiceAccount
+    name: code-server-sa
+    namespace: default
 roleRef:
   kind: ClusterRole
   name: cluster-admin
