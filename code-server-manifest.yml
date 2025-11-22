@@ -25,7 +25,7 @@ spec:
         # ⚠️ BẢO MẬT: Đặt mật khẩu truy cập Code-Server. 
         # Trong môi trường Production, nên dùng Kubernetes Secret.
         - name: PASSWORD
-          value: "matkhaucuaban" # <-- THAY THẾ BẰNG MẬT KHẨU MẠNH CỦA BẠN
+          value: "123456" # <-- THAY THẾ BẰNG MẬT KHẨU MẠNH CỦA BẠN
         resources:
           limits:
             memory: "1024Mi"
