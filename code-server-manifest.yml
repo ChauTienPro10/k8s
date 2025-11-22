@@ -16,14 +16,15 @@ spec:
         app: code-server
     spec:
       securityContext: # <-- THÊM KHỐI NÀY
-          fsGroup: 1000  # Đặt quyền sở hữu Volume thành GID 1000
-          runAsUser: 1000
+        fsGroup: 1000  # Đặt quyền sở hữu Volume thành GID 1000
+        runAsUser: 1000
       containers:
       - name: code-server
         # Image chính thức của code-server
         image: codercom/code-server:latest 
+        args: ["--bind-addr", "0.0.0.0:8080"]
         ports:
-        - containerPort: 33080
+        - containerPort: 8080
         env:
         # ⚠️ BẢO MẬT: Đặt mật khẩu truy cập Code-Server. 
         # Trong môi trường Production, nên dùng Kubernetes Secret.
@@ -58,7 +59,7 @@ spec:
   ports:
     - protocol: TCP
       port: 33080
-      targetPort: 33080
+      targetPort: 8080
 
 
 
